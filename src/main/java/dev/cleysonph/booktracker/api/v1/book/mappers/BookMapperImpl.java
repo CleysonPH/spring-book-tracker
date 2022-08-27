@@ -1,7 +1,5 @@
 package dev.cleysonph.booktracker.api.v1.book.mappers;
 
-import java.util.Objects;
-
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookDetailResponse;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookRequest;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookSummaryResponse;
@@ -18,7 +16,7 @@ public class BookMapperImpl implements BookMapper {
 
     @Override
     public Book toModel(BookRequest bookRequest) {
-        if (Objects.isNull(bookRequest)) {
+        if (bookRequest == null) {
             throw new IllegalArgumentException("bookRequest cannot be null");
         }
 
