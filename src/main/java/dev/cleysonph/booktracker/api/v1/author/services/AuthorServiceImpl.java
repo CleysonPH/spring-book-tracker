@@ -14,9 +14,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorResponse create(AuthorRequest authorRequest) {
-        if (authorRequest == null) {
-            throw new IllegalArgumentException("authorRequest cannot be null");
-        }
         var authorToCreate = authorMapper.toModel(authorRequest);
         var createdAuthor = authorRepository.save(authorToCreate);
         return authorMapper.toResponse(createdAuthor);
