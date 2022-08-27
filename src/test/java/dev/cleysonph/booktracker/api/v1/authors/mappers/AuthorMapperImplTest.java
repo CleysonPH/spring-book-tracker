@@ -12,7 +12,7 @@ import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
 import dev.cleysonph.booktracker.api.v1.author.mappers.AuthorMapperImpl;
 import dev.cleysonph.booktracker.core.models.Author;
 
-public class AuthorMapperImplTest {
+class AuthorMapperImplTest {
 
     private AuthorMapperImpl authorMapper;
 
