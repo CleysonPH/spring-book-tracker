@@ -21,7 +21,6 @@ public class AuthorRequest {
     private String name;
 
     @NotNull
-    @NotEmpty
     private LocalDate birthDate;
 
     private LocalDate deathDate;
