@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookRequest;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookSummaryResponse;
+import dev.cleysonph.booktracker.core.exceptions.AuthorNotFoundException;
 import dev.cleysonph.booktracker.core.models.Author;
 import dev.cleysonph.booktracker.core.models.Book;
 import dev.cleysonph.booktracker.core.repositories.AuthorRepository;
@@ -153,7 +154,7 @@ class BookMapperImplTest {
 
         when(authorRepository.findById(1L)).thenReturn(Optional.empty());
 
-        var e = assertThrows(IllegalArgumentException.class, () -> bookMapperImpl.toModel(bookRequest));
+        var e = assertThrows(AuthorNotFoundException.class, () -> bookMapperImpl.toModel(bookRequest));
         assertEquals("Author with id 1 not found", e.getMessage());
     }
 
