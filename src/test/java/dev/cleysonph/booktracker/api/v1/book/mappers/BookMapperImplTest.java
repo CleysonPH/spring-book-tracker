@@ -35,7 +35,7 @@ class BookMapperImplTest {
     }
 
     @Test
-    void toSummaryResponseShouldThrowExceptionWhenAuthorIdIsNull() {
+    void toSummaryResponseShouldThrowExceptionWhenAuthorIsNull() {
         var book = Book.builder()
             .id(1L)
             .title("Test")
@@ -44,7 +44,7 @@ class BookMapperImplTest {
             .coverUrl("http://test.com")
             .build();
         var e = assertThrows(IllegalArgumentException.class, () -> bookMapperImpl.toSummaryResponse(book));
-        assertEquals("book.authorId cannot be null", e.getMessage());
+        assertEquals("book.author cannot be null", e.getMessage());
     }
 
     @Test

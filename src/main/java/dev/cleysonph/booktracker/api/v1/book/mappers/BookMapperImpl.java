@@ -59,8 +59,22 @@ public class BookMapperImpl implements BookMapper {
 
     @Override
     public BookSummaryResponse toSummaryResponse(Book book) {
-        // TODO Auto-generated method stub
-        return null;
+        if (book == null) {
+            throw new IllegalArgumentException("book cannot be null");
+        }
+
+        if (book.getAuthor() == null) {
+            throw new IllegalArgumentException("book.author cannot be null");
+        }
+
+        return BookSummaryResponse.builder()
+            .id(book.getId())
+            .title(book.getTitle())
+            .pages(book.getPages())
+            .isbn(book.getIsbn())
+            .coverUrl(book.getCoverUrl())
+            .authorId(book.getAuthor().getId())
+            .build();
     }
 
     private Author getAuthor(Long authorId) {
