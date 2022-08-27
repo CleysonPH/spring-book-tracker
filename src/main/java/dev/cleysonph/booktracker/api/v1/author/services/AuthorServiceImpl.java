@@ -39,8 +39,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteById(Long authorId) {
-        // TODO Auto-generated method stub
-
+        var authorToDelete = authorRepository.findById(authorId)
+            .orElseThrow(() -> new AuthorNotFoundException(authorId));
+        authorRepository.delete(authorToDelete);
     }
 
 }
