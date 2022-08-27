@@ -23,8 +23,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<AuthorResponse> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return authorRepository.findAll()
+            .stream()
+            .map(authorMapper::toResponse)
+            .toList();
     }
 
 }
