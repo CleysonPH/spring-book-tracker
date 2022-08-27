@@ -130,4 +130,23 @@ public class AuthorControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    @Test
+    void whenDELETEInAuthorRouteIsCalledThenStatusCodeNoContentShouldBeReturned() throws Exception {
+        doNothing().when(authorService).deleteById(1L);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(AUTHOR_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void whenDELETEInAuthorRouteIsCalledWithInvalidIdThenStatusCodeNotFoundShouldBeReturned() throws Exception {
+        doThrow(new AuthorNotFoundException(1L)).when(authorService).deleteById(1L);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(AUTHOR_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Author with id 1 not found")));
+    }
+
 }
