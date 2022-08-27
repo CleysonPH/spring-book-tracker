@@ -1,6 +1,11 @@
+os: linux
+dist: xenial
 language: java
-sudo: false
 jdk: openjdk17
 install: true
 script:
-  - ./gradlew build
+  - ./gradlew sonarqube
+addons:
+  sonarcloud:
+    organization: $SONAR_ORG
+    token: $SONAR_TOKEN
