@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 public class AuthorRoutes {
 
     public static final String CREATE_AUTHOR_ROUTE = ApiV1Routes.BASE_ROUTE + "/authors";
+    public static final String FIND_ALL_AUTHORS_ROUTE = ApiV1Routes.BASE_ROUTE + "/authors";
 
 }

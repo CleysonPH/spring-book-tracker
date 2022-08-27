@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.core.Is.is;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +40,7 @@ public class AuthorControllerTest {
     private AuthorService authorService;
 
     @Test
-    void whenPOSTIsCalledThenStatusCodeCreatedShouldBeReturned() throws Exception {
+    void whenPOSTInAuthorsRouteIsCalledThenStatusCodeCreatedShouldBeReturned() throws Exception {
         var authorRequest = AuthorRequest.builder()
             .name("Test")
             .birthDate(LocalDate.of(1996, 1, 1))
@@ -65,7 +66,7 @@ public class AuthorControllerTest {
     }
 
     @Test
-    void whenPOSTIsCalledWithoutRequiredFieldThenStatusCodeBadRequestShouldBeReturned() throws Exception {
+    void whenPOSTInAuthorsRouteIsCalledWithoutRequiredFieldThenStatusCodeBadRequestShouldBeReturned() throws Exception {
         var authorRequest = AuthorRequest.builder()
             .name("Test")
             .build();
@@ -74,6 +75,28 @@ public class AuthorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(authorRequest)))
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void whenGETInAuthorsRouteIsCalledThenStatusCodeOkShouldBeReturned() throws Exception {
+        var expectedAuthorsResponse = List.of(
+            AuthorResponse.builder()
+                .id(1L)
+                .name("Test")
+                .birthDate(LocalDate.of(1996, 1, 1))
+                .deathDate(LocalDate.of(2020, 1, 1))
+                .build()
+        );
+
+        when(authorService.findAll()).thenReturn(expectedAuthorsResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(AUTHORS_ROUTE)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id", is(expectedAuthorsResponse.get(0).getId().intValue())))
+            .andExpect(jsonPath("$[0].name", is(expectedAuthorsResponse.get(0).getName())))
+            .andExpect(jsonPath("$[0].birthDate", is(expectedAuthorsResponse.get(0).getBirthDate().toString())))
+            .andExpect(jsonPath("$[0].deathDate", is(expectedAuthorsResponse.get(0).getDeathDate().toString())));
     }
 
 }
