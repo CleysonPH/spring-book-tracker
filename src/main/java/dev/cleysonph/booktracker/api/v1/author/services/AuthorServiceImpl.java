@@ -2,6 +2,8 @@ package dev.cleysonph.booktracker.api.v1.author.services;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
+
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorRequest;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
 import dev.cleysonph.booktracker.api.v1.author.mappers.AuthorMapper;
@@ -42,6 +44,15 @@ public class AuthorServiceImpl implements AuthorService {
         var authorToDelete = authorRepository.findById(authorId)
             .orElseThrow(() -> new AuthorNotFoundException(authorId));
         authorRepository.delete(authorToDelete);
+    }
+
+    @Override
+    public AuthorResponse updateById(Long authorId, AuthorRequest authorRequest) {
+        var authorToUpdate = authorRepository.findById(authorId)
+            .orElseThrow(() -> new AuthorNotFoundException(authorId));
+        BeanUtils.copyProperties(authorRequest, authorToUpdate, "id");
+        var updatedAuthor = authorRepository.save(authorToUpdate);
+        return authorMapper.toResponse(updatedAuthor);
     }
 
 }
