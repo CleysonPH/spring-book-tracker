@@ -1,4 +1,4 @@
-package dev.cleysonph.booktracker.api.v1.authors.controllers;
+package dev.cleysonph.booktracker.api.v1.author.controllers;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dev.cleysonph.booktracker.api.v1.author.controllers.AuthorController;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorRequest;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
 import dev.cleysonph.booktracker.api.v1.author.services.AuthorService;

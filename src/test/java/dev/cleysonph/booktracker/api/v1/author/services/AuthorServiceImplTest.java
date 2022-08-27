@@ -1,4 +1,4 @@
-package dev.cleysonph.booktracker.api.v1.authors.services;
+package dev.cleysonph.booktracker.api.v1.author.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorRequest;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
 import dev.cleysonph.booktracker.api.v1.author.mappers.AuthorMapper;
-import dev.cleysonph.booktracker.api.v1.author.services.AuthorServiceImpl;
 import dev.cleysonph.booktracker.core.exceptions.AuthorNotFoundException;
 import dev.cleysonph.booktracker.core.models.Author;
 import dev.cleysonph.booktracker.core.repositories.AuthorRepository;

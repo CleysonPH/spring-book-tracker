@@ -16,5 +16,6 @@ public class BookSummaryResponse {
     private Integer pages;
     private String isbn;
     private String coverUrl;
+    private Long authorId;
 
 }

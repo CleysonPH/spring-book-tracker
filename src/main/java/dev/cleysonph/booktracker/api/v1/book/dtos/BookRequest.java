@@ -45,6 +45,6 @@ public class BookRequest {
 
     @NotNull
     @Positive
-    private Integer authorId;
+    private Long authorId;
 
 }
