@@ -14,26 +14,32 @@ public class BookServiceImpl implements BookService {
 
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
+
     @Override
     public BookDetailResponse create(BookRequest bookRequest) {
-        // TODO Auto-generated method stub
-        return null;
+        var bookToCreate = bookMapper.toModel(bookRequest);
+        var createdBook = bookRepository.save(bookToCreate);
+        return bookMapper.toDetailResponse(createdBook);
     }
+
     @Override
     public List<BookSummaryResponse> findAll() {
         // TODO Auto-generated method stub
         return null;
     }
+
     @Override
     public BookDetailResponse findById(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
+
     @Override
     public BookDetailResponse updateById(Long id, BookRequest bookRequest) {
         // TODO Auto-generated method stub
         return null;
     }
+
     @Override
     public void deleteById(Long id) {
         // TODO Auto-generated method stub
