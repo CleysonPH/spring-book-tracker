@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,12 @@ public class AuthorController {
     @GetMapping(AuthorRoutes.FIND_AUTHOR_BY_ID_ROUTE)
     public AuthorResponse findById(@PathVariable Long authorId) {
         return authorService.findById(authorId);
+    }
+
+    @DeleteMapping(AuthorRoutes.DELETE_AUTHOR_BY_ID_ROUTE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long authorId) {
+        authorService.deleteById(authorId);
     }
 
 }
