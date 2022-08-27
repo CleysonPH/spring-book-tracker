@@ -27,7 +27,7 @@ import dev.cleysonph.booktracker.core.exceptions.AuthorNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = AuthorController.class)
-public class AuthorControllerTest {
+class AuthorControllerTest {
 
     private final static String AUTHORS_ROUTE = "/api/v1/authors";
     private final static String AUTHOR_ROUTE = "/api/v1/authors/{id}";

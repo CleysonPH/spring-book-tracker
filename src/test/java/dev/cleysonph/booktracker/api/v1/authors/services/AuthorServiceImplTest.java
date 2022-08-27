@@ -22,7 +22,7 @@ import dev.cleysonph.booktracker.core.models.Author;
 import dev.cleysonph.booktracker.core.repositories.AuthorRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthorServiceImplTest {
+class AuthorServiceImplTest {
 
     @Mock
     private AuthorMapper authorMapper;
