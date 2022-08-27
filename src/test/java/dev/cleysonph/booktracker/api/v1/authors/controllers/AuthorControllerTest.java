@@ -23,12 +23,14 @@ import dev.cleysonph.booktracker.api.v1.author.controllers.AuthorController;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorRequest;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
 import dev.cleysonph.booktracker.api.v1.author.services.AuthorService;
+import dev.cleysonph.booktracker.core.exceptions.AuthorNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = AuthorController.class)
 public class AuthorControllerTest {
 
     private final static String AUTHORS_ROUTE = "/api/v1/authors";
+    private final static String AUTHOR_ROUTE = "/api/v1/authors/{id}";
 
     @Autowired
     private MockMvc mockMvc;
@@ -97,6 +99,35 @@ public class AuthorControllerTest {
             .andExpect(jsonPath("$[0].name", is(expectedAuthorsResponse.get(0).getName())))
             .andExpect(jsonPath("$[0].birthDate", is(expectedAuthorsResponse.get(0).getBirthDate().toString())))
             .andExpect(jsonPath("$[0].deathDate", is(expectedAuthorsResponse.get(0).getDeathDate().toString())));
+    }
+
+    @Test
+    void whenGETInAuthorRouteIsCalledThenStatusCodeOkShouldBeReturned() throws Exception {
+        var expectedAuthorResponse = AuthorResponse.builder()
+            .id(1L)
+            .name("Test")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+
+        when(authorService.findById(1L)).thenReturn(expectedAuthorResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(AUTHOR_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", is(expectedAuthorResponse.getId().intValue())))
+            .andExpect(jsonPath("$.name", is(expectedAuthorResponse.getName())))
+            .andExpect(jsonPath("$.birthDate", is(expectedAuthorResponse.getBirthDate().toString())))
+            .andExpect(jsonPath("$.deathDate", is(expectedAuthorResponse.getDeathDate().toString())));
+    }
+
+    @Test
+    void whenGETInAuthorRouteIsCalledWithInvalidIdThenStatusCodeNotFoundShouldBeReturned() throws Exception {
+        when(authorService.findById(1L)).thenThrow(AuthorNotFoundException.class);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(AUTHOR_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
 }
