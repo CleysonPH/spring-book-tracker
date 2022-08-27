@@ -5,6 +5,7 @@ import java.util.List;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorRequest;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
 import dev.cleysonph.booktracker.api.v1.author.mappers.AuthorMapper;
+import dev.cleysonph.booktracker.core.exceptions.AuthorNotFoundException;
 import dev.cleysonph.booktracker.core.repositories.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,13 @@ public class AuthorServiceImpl implements AuthorService {
             .stream()
             .map(authorMapper::toResponse)
             .toList();
+    }
+
+    @Override
+    public AuthorResponse findById(Long authorId) {
+        return authorRepository.findById(authorId)
+            .map(authorMapper::toResponse)
+            .orElseThrow(() -> new AuthorNotFoundException(authorId));
     }
 
 }

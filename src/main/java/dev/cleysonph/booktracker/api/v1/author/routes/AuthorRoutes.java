@@ -9,5 +9,6 @@ public class AuthorRoutes {
 
     public static final String CREATE_AUTHOR_ROUTE = ApiV1Routes.BASE_ROUTE + "/authors";
     public static final String FIND_ALL_AUTHORS_ROUTE = ApiV1Routes.BASE_ROUTE + "/authors";
+    public static final String FIND_AUTHOR_BY_ID_ROUTE = ApiV1Routes.BASE_ROUTE + "/authors/{authorId}";
 
 }
