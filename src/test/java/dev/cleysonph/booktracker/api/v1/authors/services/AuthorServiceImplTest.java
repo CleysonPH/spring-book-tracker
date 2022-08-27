@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,6 +67,37 @@ public class AuthorServiceImplTest {
         assertEquals(expectedAuthorResponse.getName(), actualAuthorResponse.getName());
         assertEquals(expectedAuthorResponse.getBirthDate(), actualAuthorResponse.getBirthDate());
         assertEquals(expectedAuthorResponse.getDeathDate(), actualAuthorResponse.getDeathDate());
+    }
+
+    @Test
+    void findAllShouldReturnAListOfAuthorResponse() {
+        var authors = List.of(
+            Author.builder()
+                .id(1L)
+                .name("Test")
+                .birthDate(LocalDate.of(1996, 1, 1))
+                .deathDate(LocalDate.of(2020, 1, 1))
+                .build()
+        );
+        var expectedAuthorsResponse = List.of(
+            AuthorResponse.builder()
+                .id(1L)
+                .name("Test")
+                .birthDate(LocalDate.of(1996, 1, 1))
+                .deathDate(LocalDate.of(2020, 1, 1))
+                .build()
+        );
+
+        when(authorRepository.findAll()).thenReturn(authors);
+        when(authorMapper.toResponse(authors.get(0))).thenReturn(expectedAuthorsResponse.get(0));
+
+        var actualAuthorsResponse = authorService.findAll();
+
+        assertEquals(expectedAuthorsResponse.size(), actualAuthorsResponse.size());
+        assertEquals(expectedAuthorsResponse.get(0).getId(), actualAuthorsResponse.get(0).getId());
+        assertEquals(expectedAuthorsResponse.get(0).getName(), actualAuthorsResponse.get(0).getName());
+        assertEquals(expectedAuthorsResponse.get(0).getBirthDate(), actualAuthorsResponse.get(0).getBirthDate());
+        assertEquals(expectedAuthorsResponse.get(0).getDeathDate(), actualAuthorsResponse.get(0).getDeathDate());
     }
 
 }
