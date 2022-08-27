@@ -1,0 +1,18 @@
+os: linux
+dist: xenial
+language: java
+jdk: openjdk17
+install: true
+script:
+  - ./gradlew sonarqube --scan -s
+addons:
+  sonarcloud:
+    organization: $SONAR_ORG
+    token: $SONAR_TOKEN
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
