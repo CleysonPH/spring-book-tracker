@@ -1,0 +1,6 @@
+language: java
+sudo: false
+jdk: openjdk17
+install: true
+script:
+  - ./gradlew build
