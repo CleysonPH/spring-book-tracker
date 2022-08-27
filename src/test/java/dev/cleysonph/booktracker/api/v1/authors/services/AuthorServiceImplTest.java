@@ -160,4 +160,51 @@ public class AuthorServiceImplTest {
         assertEquals("Author with id 1 not found", e.getMessage());
     }
 
+    @Test
+    void updateByIdShouldReturnAnAuthorResponseWhenAnValidIdAndAuthorRequestIsGiven() {
+        var authorRequest = AuthorRequest.builder()
+            .name("Test Edited")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+        var expectedAuthorResponse = AuthorResponse.builder()
+            .id(1L)
+            .name("Test Edited")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+
+        var author = Author.builder()
+            .id(1L)
+            .name("Test Edited")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+
+        when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
+        when(authorRepository.save(author)).thenReturn(author);
+        when(authorMapper.toResponse(author)).thenReturn(expectedAuthorResponse);
+
+        var actualAuthorResponse = authorService.updateById(1L, authorRequest);
+
+        assertEquals(expectedAuthorResponse.getId(), actualAuthorResponse.getId());
+        assertEquals(expectedAuthorResponse.getName(), actualAuthorResponse.getName());
+        assertEquals(expectedAuthorResponse.getBirthDate(), actualAuthorResponse.getBirthDate());
+        assertEquals(expectedAuthorResponse.getDeathDate(), actualAuthorResponse.getDeathDate());
+    }
+
+    @Test
+    void updateByIdShouldThrowAnExceptionWhenAnInvalidIdIsGiven() {
+        var authorRequest = AuthorRequest.builder()
+            .name("Test Edited")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+
+        when(authorRepository.findById(1L)).thenReturn(Optional.empty());
+
+        var e = assertThrows(AuthorNotFoundException.class, () -> authorService.updateById(1L, authorRequest));
+        assertEquals("Author with id 1 not found", e.getMessage());
+    }
+
 }

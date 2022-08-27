@@ -44,4 +44,10 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.delete(authorToDelete);
     }
 
+    @Override
+    public AuthorResponse updateById(Long authorId, AuthorRequest authorRequest) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
