@@ -1,7 +1,7 @@
 package dev.cleysonph.booktracker.api.v1.authors.services;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -133,6 +133,30 @@ public class AuthorServiceImplTest {
         when(authorRepository.findById(1L)).thenReturn(Optional.empty());
 
         var e = assertThrows(AuthorNotFoundException.class, () -> authorService.findById(1L));
+        assertEquals("Author with id 1 not found", e.getMessage());
+    }
+
+    @Test
+    void deleteByIdShouldDeleteAnAuthorWhenAnValidIdIsGiven() {
+        var author = Author.builder()
+            .id(1L)
+            .name("Test")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+
+        when(authorRepository.findById(1L)).thenReturn(Optional.of(author));
+
+        authorService.deleteById(1L);
+
+        verify(authorRepository, times(1)).delete(author);
+    }
+
+    @Test
+    void deleteByIdShouldThrowAnExceptionWhenAnInvalidIdIsGiven() {
+        when(authorRepository.findById(1L)).thenReturn(Optional.empty());
+
+        var e = assertThrows(AuthorNotFoundException.class, () -> authorService.deleteById(1L));
         assertEquals("Author with id 1 not found", e.getMessage());
     }
 

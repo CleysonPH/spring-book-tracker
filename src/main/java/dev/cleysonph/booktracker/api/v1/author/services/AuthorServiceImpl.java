@@ -37,4 +37,10 @@ public class AuthorServiceImpl implements AuthorService {
             .orElseThrow(() -> new AuthorNotFoundException(authorId));
     }
 
+    @Override
+    public void deleteById(Long authorId) {
+        // TODO Auto-generated method stub
+
+    }
+
 }
