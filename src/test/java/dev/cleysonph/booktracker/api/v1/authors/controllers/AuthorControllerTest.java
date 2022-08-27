@@ -149,4 +149,60 @@ public class AuthorControllerTest {
             .andExpect(jsonPath("$.message", is("Author with id 1 not found")));
     }
 
+    @Test
+    void whenPUTInAuthorRouteIsCalledThenStatusCodeOkShouldBeReturned() throws Exception {
+        var authorRequest = AuthorRequest.builder()
+            .name("Test")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+        var expectedAuthorResponse = AuthorResponse.builder()
+            .id(1L)
+            .name("Test")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+
+        when(authorService.updateById(1L, authorRequest)).thenReturn(expectedAuthorResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders.put(AUTHOR_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(authorRequest)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", is(expectedAuthorResponse.getId().intValue())))
+            .andExpect(jsonPath("$.name", is(expectedAuthorResponse.getName())))
+            .andExpect(jsonPath("$.birthDate", is(expectedAuthorResponse.getBirthDate().toString())))
+            .andExpect(jsonPath("$.deathDate", is(expectedAuthorResponse.getDeathDate().toString())));
+    }
+
+    @Test
+    void whenPUTInAuthorRouteIsCalledWithInvalidIdThenStatusCodeNotFoundShouldBeReturned() throws Exception {
+        var authorRequest = AuthorRequest.builder()
+            .name("Test")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
+
+        when(authorService.updateById(1L, authorRequest)).thenThrow(new AuthorNotFoundException(1L));
+
+        mockMvc.perform(MockMvcRequestBuilders.put(AUTHOR_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(authorRequest)))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Author with id 1 not found")));
+    }
+
+    @Test
+    void whenPUTInAuthorRouteIsCalledWithInvalidBodyThenStatusCodeBadRequestShouldBeReturned() throws Exception {
+        var authorRequest = AuthorRequest.builder()
+            .name("Test")
+            .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put(AUTHOR_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(authorRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("Validation failed")));
+    }
+
 }
