@@ -9,13 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorRequest;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
-import dev.cleysonph.booktracker.api.v1.author.mappers.AuthorMapper;
 import dev.cleysonph.booktracker.api.v1.author.mappers.AuthorMapperImpl;
 import dev.cleysonph.booktracker.core.models.Author;
 
 public class AuthorMapperImplTest {
 
-    private AuthorMapper authorMapper;
+    private AuthorMapperImpl authorMapper;
 
     @BeforeEach
     public void setUp() {
