@@ -20,7 +20,7 @@ public class AuthorRequest {
 
     @NotNull
     @NotEmpty
-    @Size(min = 3)
+    @Size(min = 3, max = 100)
     private String name;
 
     @NotNull

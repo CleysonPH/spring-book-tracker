@@ -1,9 +1,10 @@
 package dev.cleysonph.booktracker.api.v1.common.dtos;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -11,13 +12,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorResponse {
+@EqualsAndHashCode(callSuper = true)
+public class ValidationErrorResponse extends ErrorResponse {
 
-    private Integer status;
-    private String reason;
-    private String error;
-    private String message;
-    private String path;
-    private LocalDateTime timestamp;
+    private List<ValidationError> errors;
 
 }
