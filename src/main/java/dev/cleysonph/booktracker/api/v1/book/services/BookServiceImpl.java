@@ -2,8 +2,6 @@ package dev.cleysonph.booktracker.api.v1.book.services;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
-
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookDetailResponse;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookRequest;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookSummaryResponse;
