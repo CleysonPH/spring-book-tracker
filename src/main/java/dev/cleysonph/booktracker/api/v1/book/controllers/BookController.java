@@ -35,4 +35,9 @@ public class BookController {
         return bookService.findAll();
     }
 
+    @GetMapping(BookRoutes.FIND_BOOK_BY_ID_ROUTE)
+    public BookDetailResponse findById(Long id) {
+        return bookService.findById(id);
+    }
+
 }
