@@ -2,6 +2,8 @@ package dev.cleysonph.booktracker.api.v1.book.services;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
+
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookDetailResponse;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookRequest;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookSummaryResponse;
@@ -40,8 +42,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDetailResponse updateById(Long id, BookRequest bookRequest) {
-        // TODO Auto-generated method stub
-        return null;
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException(id);
+        }
+        var bookToUpdate = bookMapper.toModel(bookRequest);
+        bookToUpdate.setId(id);
+        var updatedBook = bookRepository.save(bookToUpdate);
+        return bookMapper.toDetailResponse(updatedBook);
     }
 
     @Override

@@ -210,13 +210,19 @@ class BookServiceImplTest {
             .authorId(1L)
             .build();
 
-        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
+        when(bookRepository.existsById(1L)).thenReturn(false);
         var exception = assertThrows(BookNotFoundException.class, () -> bookService.updateById(1L, bookRequest));
         assertEquals("Book with id 1 not found", exception.getMessage());
     }
 
     @Test
     void updateByIdShouldUpdateBookWhenAValidIdIsGiven() {
+        var author = Author.builder()
+            .id(1L)
+            .name("Test")
+            .birthDate(LocalDate.of(1996, 1, 1))
+            .deathDate(LocalDate.of(2020, 1, 1))
+            .build();
         var book = Book.builder()
             .id(1L)
             .title("Test")
@@ -224,6 +230,7 @@ class BookServiceImplTest {
             .pages(100)
             .isbn("1234567890")
             .coverUrl("https://example.com")
+            .author(author)
             .build();
         var bookRequest = BookRequest.builder()
             .title("Test")
@@ -243,8 +250,10 @@ class BookServiceImplTest {
             .authorId(1L)
             .build();
 
-        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        when(bookRepository.existsById(1L)).thenReturn(true);
+        when(bookMapper.toModel(bookRequest)).thenReturn(book);
         when(bookRepository.save(book)).thenReturn(book);
+        when(bookMapper.toDetailResponse(book)).thenReturn(expectedBookDetailResponse);
 
         var actualBookDetailResponse = bookService.updateById(1L, bookRequest);
 
