@@ -46,8 +46,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-
+        var book = bookRepository.findById(id)
+            .orElseThrow(() -> new BookNotFoundException(id));
+        bookRepository.delete(book);
     }
 
 }

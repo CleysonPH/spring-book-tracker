@@ -13,5 +13,6 @@ public class BookRoutes {
     public static final String CREATE_BOOK_ROUTE = ApiV1Routes.BASE_ROUTE + RESOURCE;
     public static final String FIND_ALL_BOOKS_ROUTE = ApiV1Routes.BASE_ROUTE + RESOURCE;
     public static final String FIND_BOOK_BY_ID_ROUTE = ApiV1Routes.BASE_ROUTE + RESOURCE + IDENTIFIER;
+    public static final String DELETE_BOOK_BY_ID_ROUTE = ApiV1Routes.BASE_ROUTE + RESOURCE + IDENTIFIER;
 
 }

@@ -176,4 +176,27 @@ class BookServiceImplTest {
         assertEquals(expectedBookDetailResponse.getAuthorId(), actualBookDetailResponse.getAuthorId());
     }
 
+    @Test
+    void deleteByIdShouldThrowAnExceptionWhenAnInvalidIdIsGiven() {
+        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
+        var exception = assertThrows(BookNotFoundException.class, () -> bookService.deleteById(1L));
+        assertEquals("Book with id 1 not found", exception.getMessage());
+    }
+
+    @Test
+    void deleteByIdShouldDeleteBookWhenAValidIdIsGiven() {
+        var book = Book.builder()
+            .id(1L)
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("1234567890")
+            .coverUrl("https://example.com")
+            .build();
+
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        bookService.deleteById(1L);
+        verify(bookRepository, times(1)).delete(book);
+    }
+
 }
