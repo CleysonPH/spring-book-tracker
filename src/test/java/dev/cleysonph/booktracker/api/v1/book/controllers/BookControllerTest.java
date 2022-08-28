@@ -173,8 +173,16 @@ public class BookControllerTest {
 
     @Test
     void whenPUTInBookRouteIsCalledWithInvalidBookIdThenStatusCodeNotFoundShouldBeReturned() throws JsonProcessingException, Exception {
-        var bookRequest = BookRequest.builder().build();
+        var bookRequest = BookRequest.builder()
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("8550804606")
+            .coverUrl("http://test.com")
+            .authorId(1L)
+            .build();
 
+        when(authorRepository.existsById(1L)).thenReturn(true);
         when(bookService.updateById(1L, bookRequest)).thenThrow(new BookNotFoundException(1L));
 
         mockMvc.perform(put(BOOK_ROUTE, 1L)
