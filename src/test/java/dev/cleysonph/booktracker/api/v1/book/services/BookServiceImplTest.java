@@ -130,7 +130,7 @@ class BookServiceImplTest {
 
     @Test
     void findByIdShouldThrowAnExceptionWhenAnInvalidIdIsGiven() {
-        when(bookRepository.findById(1L)).thenReturn(null);
+        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
         var exception = assertThrows(BookNotFoundException.class, () -> bookService.findById(1L));
         assertEquals("Book with id 1 not found", exception.getMessage());
     }
