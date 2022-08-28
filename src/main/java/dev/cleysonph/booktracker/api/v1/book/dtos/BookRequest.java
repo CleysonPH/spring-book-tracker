@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.ISBN;
 import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.constraints.ISBN.Type;
 
+import dev.cleysonph.booktracker.api.v1.author.validators.AuthorExistsById;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,6 +46,7 @@ public class BookRequest {
 
     @NotNull
     @Positive
+    @AuthorExistsById
     private Long authorId;
 
 }
