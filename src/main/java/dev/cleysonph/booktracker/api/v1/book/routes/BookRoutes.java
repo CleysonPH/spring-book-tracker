@@ -11,5 +11,6 @@ public class BookRoutes {
     public static final String IDENTIFIER = "/{bookId}";
 
     public static final String CREATE_BOOK_ROUTE = ApiV1Routes.BASE_ROUTE + RESOURCE;
+    public static final String FIND_ALL_BOOKS_ROUTE = ApiV1Routes.BASE_ROUTE + RESOURCE;
 
 }

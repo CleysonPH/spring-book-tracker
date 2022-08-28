@@ -1,9 +1,12 @@
 package dev.cleysonph.booktracker.api.v1.book.controllers;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
+import java.util.List;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.hamcrest.core.Is.is;
 
 import org.junit.jupiter.api.Test;
@@ -20,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookDetailResponse;
 import dev.cleysonph.booktracker.api.v1.book.dtos.BookRequest;
+import dev.cleysonph.booktracker.api.v1.book.dtos.BookSummaryResponse;
 import dev.cleysonph.booktracker.api.v1.book.services.BookService;
 import dev.cleysonph.booktracker.core.repositories.AuthorRepository;
 
@@ -88,6 +92,31 @@ public class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequest)))
             .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void whenGETInBooksRouteIsCalledThenStatusCodeOkShouldBeReturned() throws Exception {
+        var expectedBooksSummaryResponse = List.of(
+            BookSummaryResponse.builder()
+                .id(1L)
+                .title("Test")
+                .pages(100)
+                .isbn("8550804606")
+                .coverUrl("http://test.com")
+                .authorId(1L)
+                .build()
+        );
+
+        when(bookService.findAll()).thenReturn(expectedBooksSummaryResponse);
+
+        mockMvc.perform(get(BOOKS_ROUTE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id", is(expectedBooksSummaryResponse.get(0).getId().intValue())))
+            .andExpect(jsonPath("$[0].title", is(expectedBooksSummaryResponse.get(0).getTitle())))
+            .andExpect(jsonPath("$[0].pages", is(expectedBooksSummaryResponse.get(0).getPages())))
+            .andExpect(jsonPath("$[0].isbn", is(expectedBooksSummaryResponse.get(0).getIsbn())))
+            .andExpect(jsonPath("$[0].coverUrl", is(expectedBooksSummaryResponse.get(0).getCoverUrl())))
+            .andExpect(jsonPath("$[0].authorId", is(expectedBooksSummaryResponse.get(0).getAuthorId().intValue())));
     }
 
 }
