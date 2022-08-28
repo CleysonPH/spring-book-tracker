@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,6 +34,11 @@ public class BookController {
     @GetMapping(BookRoutes.FIND_ALL_BOOKS_ROUTE)
     public List<BookSummaryResponse> findAll() {
         return bookService.findAll();
+    }
+
+    @GetMapping(BookRoutes.FIND_BOOK_BY_ID_ROUTE)
+    public BookDetailResponse findById(@PathVariable Long bookId) {
+        return bookService.findById(bookId);
     }
 
 }
