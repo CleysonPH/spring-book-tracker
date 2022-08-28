@@ -158,8 +158,6 @@ public class BookControllerTest {
     void whenDELETEInBookRouteIsCalledWithInvalidBookIdThenStatusCodeNotFoundShouldBeReturned() throws Exception {
         doThrow(new BookNotFoundException(1L)).when(bookService).deleteById(1L);
 
-        doNothing().when(bookService).deleteById(1L);
-
         mockMvc.perform(delete(BOOK_ROUTE, 1L))
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.message", is("Book with id 1 not found")));
