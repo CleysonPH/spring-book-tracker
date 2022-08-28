@@ -164,11 +164,80 @@ public class BookControllerTest {
     }
 
     @Test
-    void whenDELETEIsBookRouteIsCalledWithValidBookIdThenStatusCodeNoContentShouldBeReturned() throws Exception {
+    void whenDELETEInBookRouteIsCalledWithValidBookIdThenStatusCodeNoContentShouldBeReturned() throws Exception {
         doNothing().when(bookService).deleteById(1L);
 
         mockMvc.perform(delete(BOOK_ROUTE, 1L))
             .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void whenPUTInBookRouteIsCalledWithInvalidBookIdThenStatusCodeNotFoundShouldBeReturned() throws JsonProcessingException, Exception {
+        var bookRequest = BookRequest.builder()
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("8550804606")
+            .coverUrl("http://test.com")
+            .authorId(1L)
+            .build();
+
+        when(authorRepository.existsById(1L)).thenReturn(true);
+        when(bookService.updateById(1L, bookRequest)).thenThrow(new BookNotFoundException(1L));
+
+        mockMvc.perform(put(BOOK_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(bookRequest)))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Book with id 1 not found")));
+    }
+
+    @Test
+    void whenPUTInBookRouteIsCalledWithInvalidDataThenStatusCodeBadRequestShouldBeReturned() throws JsonProcessingException, Exception {
+        var bookRequest = BookRequest.builder().build();
+
+        mockMvc.perform(put(BOOK_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(bookRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("Validation failed")));
+    }
+
+    @Test
+    void whenPUTInBookRouteIsCalledWithValidDataThenStatusCodeOkShouldBeReturned() throws Exception {
+        var bookRequest = BookRequest.builder()
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("8550804606")
+            .coverUrl("http://test.com")
+            .authorId(1L)
+            .build();
+
+        var expectedBookDetailResponse = BookDetailResponse.builder()
+            .id(1L)
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("8550804606")
+            .coverUrl("http://test.com")
+            .authorId(1L)
+            .build();
+
+        when(authorRepository.existsById(1L)).thenReturn(true);
+        when(bookService.updateById(1L, bookRequest)).thenReturn(expectedBookDetailResponse);
+
+        mockMvc.perform(put(BOOK_ROUTE, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(bookRequest)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", is(expectedBookDetailResponse.getId().intValue())))
+            .andExpect(jsonPath("$.title", is(expectedBookDetailResponse.getTitle())))
+            .andExpect(jsonPath("$.summary", is(expectedBookDetailResponse.getSummary())))
+            .andExpect(jsonPath("$.pages", is(expectedBookDetailResponse.getPages())))
+            .andExpect(jsonPath("$.isbn", is(expectedBookDetailResponse.getIsbn())))
+            .andExpect(jsonPath("$.coverUrl", is(expectedBookDetailResponse.getCoverUrl())))
+            .andExpect(jsonPath("$.authorId", is(expectedBookDetailResponse.getAuthorId().intValue())));
     }
 
 }

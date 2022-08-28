@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +47,11 @@ public class BookController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long bookId) {
         bookService.deleteById(bookId);
+    }
+
+    @PutMapping(BookRoutes.UPDATE_BOOK_BY_ID_ROUTE)
+    public BookDetailResponse updateById(@PathVariable Long bookId, @Valid @RequestBody BookRequest bookRequest) {
+        return bookService.updateById(bookId, bookRequest);
     }
 
 }
