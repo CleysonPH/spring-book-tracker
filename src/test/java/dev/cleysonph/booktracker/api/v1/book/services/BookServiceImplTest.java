@@ -199,4 +199,62 @@ class BookServiceImplTest {
         verify(bookRepository, times(1)).delete(book);
     }
 
+    @Test
+    void updateByIdShouldThrownAnExceptionWhenAnInvalidIdIsGiven() {
+        var bookRequest = BookRequest.builder()
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("1234567890")
+            .coverUrl("https://example.com")
+            .authorId(1L)
+            .build();
+
+        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
+        var exception = assertThrows(BookNotFoundException.class, () -> bookService.updateById(1L, bookRequest));
+        assertEquals("Book with id 1 not found", exception.getMessage());
+    }
+
+    @Test
+    void updateByIdShouldUpdateBookWhenAValidIdIsGiven() {
+        var book = Book.builder()
+            .id(1L)
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("1234567890")
+            .coverUrl("https://example.com")
+            .build();
+        var bookRequest = BookRequest.builder()
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("1234567890")
+            .coverUrl("https://example.com")
+            .authorId(1L)
+            .build();
+        var expectedBookDetailResponse = BookDetailResponse.builder()
+            .id(1L)
+            .title("Test")
+            .summary("Test")
+            .pages(100)
+            .isbn("1234567890")
+            .coverUrl("https://example.com")
+            .authorId(1L)
+            .build();
+
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
+        when(bookRepository.save(book)).thenReturn(book);
+
+        var actualBookDetailResponse = bookService.updateById(1L, bookRequest);
+
+        assertEquals(expectedBookDetailResponse.getId(), actualBookDetailResponse.getId());
+        assertEquals(expectedBookDetailResponse.getTitle(), actualBookDetailResponse.getTitle());
+        assertEquals(expectedBookDetailResponse.getSummary(), actualBookDetailResponse.getSummary());
+        assertEquals(expectedBookDetailResponse.getPages(), actualBookDetailResponse.getPages());
+        assertEquals(expectedBookDetailResponse.getIsbn(), actualBookDetailResponse.getIsbn());
+        assertEquals(expectedBookDetailResponse.getCoverUrl(), actualBookDetailResponse.getCoverUrl());
+        assertEquals(expectedBookDetailResponse.getAuthorId(), actualBookDetailResponse.getAuthorId());
+    }
+
 }
