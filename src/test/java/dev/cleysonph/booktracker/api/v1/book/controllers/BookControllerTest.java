@@ -154,4 +154,23 @@ public class BookControllerTest {
             .andExpect(jsonPath("$.authorId", is(expectedBookDetailResponse.getAuthorId().intValue())));
     }
 
+    @Test
+    void whenDELETEInBookRouteIsCalledWithInvalidBookIdThenStatusCodeNotFoundShouldBeReturned() throws Exception {
+        doThrow(new BookNotFoundException(1L)).when(bookService).deleteById(1L);
+
+        doNothing().when(bookService).deleteById(1L);
+
+        mockMvc.perform(delete(BOOK_ROUTE, 1L))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Book with id 1 not found")));
+    }
+
+    @Test
+    void whenDELETEIsBookRouteIsCalledWithValidBookIdThenStatusCodeNoContentShouldBeReturned() throws Exception {
+        doNothing().when(bookService).deleteById(1L);
+
+        mockMvc.perform(delete(BOOK_ROUTE, 1L))
+            .andExpect(status().isNoContent());
+    }
+
 }
