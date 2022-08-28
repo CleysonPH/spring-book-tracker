@@ -24,8 +24,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookSummaryResponse> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return bookRepository.findAll()
+            .stream()
+            .map(bookMapper::toSummaryResponse)
+            .toList();
     }
 
     @Override
