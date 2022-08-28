@@ -1,15 +1,12 @@
 package dev.cleysonph.booktracker.core.models;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,13 +16,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@Entity
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Author {
+public class Book {
 
     @Id
     @ToString.Include
@@ -33,17 +30,22 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ToString.Include
-    @Column(nullable = false, length = 100)
-    private String name;
+    @Column(nullable = false, length = 255)
+    private String title;
+
+    @Lob
+    @Column(nullable = false)
+    private String summary;
 
     @Column(nullable = false)
-    private LocalDate birthDate;
+    private Integer pages;
 
-    @Column(nullable = true)
-    private LocalDate deathDate;
+    @Column(nullable = false)
+    private String isbn;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<Book> books;
+    @Column(nullable = false)
+    private String coverUrl;
 
+    @ManyToOne(optional = false)
+    private Author author;
 }

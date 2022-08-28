@@ -1,4 +1,4 @@
-package dev.cleysonph.booktracker.api.v1.authors.mappers;
+package dev.cleysonph.booktracker.api.v1.author.mappers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorRequest;
 import dev.cleysonph.booktracker.api.v1.author.dtos.AuthorResponse;
-import dev.cleysonph.booktracker.api.v1.author.mappers.AuthorMapperImpl;
 import dev.cleysonph.booktracker.core.models.Author;
 
 class AuthorMapperImplTest {
